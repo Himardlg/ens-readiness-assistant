@@ -78,16 +78,4 @@ Readiness GRC
 - Nuevo: 4 controles adicionales (cifrado, desarrollo seguro, gestión de cambios, gestión de configuración), incluyendo los primeros de prioridad **baja**.
 - Mejora: grupos de radio con `<fieldset>`/`<legend>` y foco visible para accesibilidad.
 
-## Próximo paso recomendado
 
-Antes de introducir backend, IA, autenticación o bases de datos, estabiliza:
-
-1. modelo GRC;
-2. cuestionario;
-3. scoring;
-4. modelo de evidencias;
-5. modelo de gaps;
-6. plan de acción;
-7. exportación/importación.
-
-Después se puede convertir en una plataforma.
