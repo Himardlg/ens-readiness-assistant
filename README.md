@@ -67,5 +67,15 @@ Readiness GRC
 
 "Sí" no significa automáticamente "cumplimiento ENS". La aplicabilidad, categorización y correspondencia normativa deben revisarse para el alcance real.
 
+📄 Licencia
+Este proyecto está publicado bajo licencia MIT. Puedes usarlo, modificarlo y distribuirlo libremente, citando la fuente.
+
+👤 Autor
+Himar de León González
+Consultor GRC · Ciberseguridad · Gobernanza de IA
+
+LinkedIn
+
+
 
 
