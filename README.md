@@ -67,15 +67,5 @@ Readiness GRC
 
 "Sí" no significa automáticamente "cumplimiento ENS". La aplicabilidad, categorización y correspondencia normativa deben revisarse para el alcance real.
 
-## Novedades v2.1
-
-- Corregido: el contenedor principal no aplicaba estilos (`<main>` sin clase `app-main`).
-- Corregido: en móvil, los botones de Guardar/Cargar/Exportar desaparecían sin alternativa.
-- Nuevo: botón **Importar JSON** — cierra el ciclo de `ens-project.json` (exportar → importar), con validación básica de esquema.
-- Nuevo: validación de campos obligatorios en el paso 1 (organización y tipo) antes de continuar.
-- Nuevo: indicador de "cambios sin guardar" en la cabecera y aviso al cerrar la pestaña con cambios pendientes.
-- Nuevo: `data/recommendations.js` y `data/schema.js` ahora se cargan y se usan realmente (recomendación por prioridad en el plan de acción; `schema`/`version` del export tomados de `schema.js`).
-- Nuevo: 4 controles adicionales (cifrado, desarrollo seguro, gestión de cambios, gestión de configuración), incluyendo los primeros de prioridad **baja**.
-- Mejora: grupos de radio con `<fieldset>`/`<legend>` y foco visible para accesibilidad.
 
 
