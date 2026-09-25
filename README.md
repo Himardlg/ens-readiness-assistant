@@ -68,14 +68,19 @@ Readiness GRC
 "Sí" no significa automáticamente "cumplimiento ENS". La aplicabilidad, categorización y correspondencia normativa deben revisarse para el alcance real.
 
 📄 Licencia
-Este proyecto está publicado bajo licencia MIT. Puedes usarlo, modificarlo y distribuirlo libremente, citando la fuente.
 
-👤 Autor
-Himar de León González
+Este proyecto está publicado bajo licencia **MIT**. Puedes usarlo, modificarlo y distribuirlo libremente, citando la fuente.
+
+Ver archivo [LICENSE](./LICENSE) para más detalles.
+
+---
+
+## 👤 Autor
+
+**Himar de León González**  
 Consultor GRC · Ciberseguridad · Gobernanza de IA
 
-LinkedIn
-
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Himar%20de%20León%20González-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/himar-de-leon-gonzalez)
 
 
 
