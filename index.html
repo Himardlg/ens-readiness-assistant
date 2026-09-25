@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ENS Readiness Assistant v2 — GRC</title>
+<meta name="description" content="Evaluación guiada de readiness ENS con gaps, evidencias y plan de acción.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="shield" aria-hidden="true">🛡️</span><div><h1>ENS Readiness Assistant</h1><p>GRC · Readiness &amp; Gap Assessment · RD 311/2022</p></div></div>
+  <div class="header-actions">
+    <span class="save-indicator" id="saveIndicator">Sin guardar</span>
+    <button class="ghost" onclick="saveAssessment()">Guardar</button>
+    <button class="ghost" onclick="loadAssessment()">Cargar</button>
+    <button class="ghost" onclick="exportJSON()">Exportar JSON</button>
+    <button class="ghost" onclick="document.getElementById('importFile').click()">Importar JSON</button>
+    <input type="file" id="importFile" accept="application/json" class="sr-only" onchange="importJSON(this.files[0])">
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="progress"><div id="progressFill"></div></div>
+  <div class="steps"><span class="active" data-step="1">1. Organización</span><span data-step="2">2. Aplicabilidad</span><span data-step="3">3. Assessment</span><span data-step="4">4. Resultado</span></div>
+
+  <section id="step1" class="step active">
+    <div class="hero">
+      <span class="eyebrow">ENS READINESS</span>
+      <h2>De la primera evaluación al plan de acción.</h2>
+      <p>Una evaluación GRC sencilla para identificar aplicabilidad, situación actual, evidencias y próximos pasos. No sustituye una auditoría ni una certificación ENS.</p>
+    </div>
+    <div class="card grid2">
+      <label>Organización *<input id="orgName" placeholder="Ej. Empresa / Ayuntamiento" required><span class="field-error" id="err-orgName"></span></label>
+      <label>Tipo de organización *<select id="orgType" required><option value="">Selecciona…</option><option value="aapp">Administración Pública</option><option value="universidad">Universidad pública</option><option value="proveedor">Proveedor tecnológico / contratista</option><option value="privada">Entidad privada sin prestación ENS identificada</option><option value="otro">Otro</option></select><span class="field-error" id="err-orgType"></span></label>
+      <label>Sector<select id="sector"><option value="">Selecciona…</option><option>Administración pública</option><option>Salud</option><option>Educación</option><option>Servicios tecnológicos</option><option>Finanzas</option><option>Industria</option><option>Otros</option></select></label>
+      <label>Tamaño<select id="size"><option>Micro / pequeña</option><option>Mediana</option><option>Grande</option></select></label>
+      <label>Servicio principal<textarea id="service" placeholder="¿Qué servicio presta y qué sistemas están implicados?"></textarea></label>
+      <label>Relación con el sector público<textarea id="publicRelation" placeholder="Contrato, convenio, prestación de servicio, suministro, ninguna…"></textarea></label>
+    </div>
+    <div class="actions right"><button class="primary" onclick="goToStep2()">Continuar →</button></div>
+  </section>
+
+  <section id="step2" class="step">
+    <div class="section-title"><span class="eyebrow">2 / 4</span><h2>Aplicabilidad y contexto</h2><p>El resultado es orientativo: la aplicabilidad real debe contrastarse con el supuesto jurídico y el alcance concreto del servicio/sistema.</p></div>
+    <div class="card">
+      <fieldset class="callout"><legend>¿Existe una prestación o relación contractual con el sector público que afecte al servicio evaluado?</legend>
+        <div class="choice-row"><label><input type="radio" name="publicContract" value="si"> Sí</label><label><input type="radio" name="publicContract" value="no"> No</label><label><input type="radio" name="publicContract" value="no_sabe" checked> No sé</label></div>
+      </fieldset>
+      <h3>Impacto preliminar del sistema</h3>
+      <div class="grid3">
+        <label>Disponibilidad<select id="availability"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+        <label>Confidencialidad<select id="confidentiality"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+        <label>Integridad<select id="integrity"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+      </div>
+      <label>Tipos de información relevantes<select id="infoType" multiple size="5"><option value="publica">Pública</option><option value="personal">Datos personales</option><option value="sensible">Información sensible</option><option value="critica">Información/servicio crítico</option><option value="financiera">Información financiera</option></select></label>
+    </div>
+    <div class="actions"><button class="secondary" onclick="next(1)">← Atrás</button><button class="primary" onclick="next(3)">Continuar →</button></div>
+  </section>
+
+  <section id="step3" class="step">
+    <div class="section-title"><span class="eyebrow">3 / 4</span><h2>Assessment GRC</h2><p>Para cada área indica el estado y, sobre todo, si puedes demostrarlo con evidencia.</p></div>
+    <div id="controls"></div>
+    <div class="actions"><button class="secondary" onclick="next(2)">← Atrás</button><button class="primary" onclick="generateReport()">Generar assessment →</button></div>
+  </section>
+
+  <section id="step4" class="step">
+    <div class="section-title"><span class="eyebrow">4 / 4</span><h2>Resultado ejecutivo</h2><p id="reportMeta"></p></div>
+    <div id="report"></div>
+    <div class="actions right"><button class="secondary" onclick="printReport()">🖨️ Imprimir / PDF</button><button class="secondary" onclick="exportJSON()">Exportar proyecto</button><button class="primary" onclick="next(3)">← Revisar assessment</button></div>
+  </section>
+</main>
+<footer>ENS Readiness Assistant v2 · Evaluación orientativa · RD 311/2022 · La herramienta no constituye certificación ni dictamen jurídico.</footer>
+<script src="data/controls.js"></script>
+<script src="data/recommendations.js"></script>
+<script src="data/schema.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
