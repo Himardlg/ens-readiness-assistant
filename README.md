@@ -14,33 +14,11 @@ El proyecto no intenta sustituir una auditoría ENS ni convertirse todavía en u
 - ¿Qué gaps tenemos?
 - ¿Quién debe actuar y cuándo?
 
-## Novedades v2.1
-
-- Corregido: evidencia, responsable, fecha y observaciones ahora se leen, guardan y exportan.
-- Catálogo ampliado a 38 controles con `minCategory`; referencias ENS corregidas (aún **sin verificar**, ver `docs/ens-mapping.md`).
-- Puntuación ponderada por prioridad, **readiness verificable** y separación gap / «No sé» / «sí sin evidencia».
-- Desglose por área, plan ordenado, estado y esfuerzo de acciones, alertas de vencidas y sin responsable.
-- Exportación del plan a CSV; importación JSON validada.
-- Autoguardado con recuperación de borrador; avisos no bloqueantes; filtros y contador de progreso.
-- Pantalla de inicio con introducción y menú interactivo (nueva evaluación, continuar borrador, importar, ejemplo con empresa ficticia, cómo funciona).
-- Accesibilidad (foco, `aria-*`), CSP estricta sin `onclick` inline, tests (`npm test`) y CI.
 
 ![Inicio](docs/screenshot-inicio.png)
 
 ![Resultado](docs/screenshot-resultado.png)
 
-## Estructura
-
-```text
-index.html
-styles.css
-app.js          # interfaz
-logic.js        # lógica pura (puntuación, aplicabilidad, validación)
-data/           # controls.js, recommendations.js, schema.js, example.js (caso ficticio)
-tests/          # node --test
-docs/
-.github/workflows/  # CI y GitHub Pages
-```
 
 ## Ejecución
 
