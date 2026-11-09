@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>ENS Readiness Assistant v2 — GRC</title>
+<meta name="description" content="Evaluación guiada de readiness ENS con gaps, evidencias y plan de acción.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="shield" aria-hidden="true">🛡️</span><div><h1>ENS Readiness Assistant</h1><p>GRC · Readiness &amp; Gap Assessment · RD 311/2022</p></div></div>
+  <div class="header-actions">
+    <button class="ghost" data-action="home">⌂ Inicio</button>
+    <button class="ghost" data-action="library">Biblioteca de controles</button>
+    <button class="ghost" data-action="theme" id="themeButton" aria-label="Cambiar tema">☾ Tema</button>
+    <button class="ghost" data-action="language" id="languageButton">EN</button>
+    <span class="save-indicator" id="saveIndicator" role="status">Sin guardar</span>
+    <button class="ghost" data-action="save">Guardar</button>
+    <button class="ghost" data-action="load">Cargar</button>
+    <button class="ghost" data-action="export-json">Exportar JSON</button>
+    <button class="ghost" data-action="import-json">Importar JSON</button>
+    <input type="file" id="importFile" accept="application/json,.json" class="sr-only" aria-label="Importar fichero JSON" tabindex="-1">
+  </div>
+</header>
+
+<main class="app-main on-home" id="main">
+  <div class="example-bar" id="exampleBar" role="note" hidden>
+    <span><strong>Modo ejemplo.</strong> Estás viendo una empresa ficticia. Recorre los pasos libremente: nada de esto se guarda ni toca tus datos.</span>
+    <button class="ghost-dark" data-action="exit-example">Salir del ejemplo</button>
+  </div>
+  <div class="progress" id="progressBar" role="progressbar" aria-label="Progreso del assessment" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progressFill"></div></div>
+  <div class="steps" aria-label="Pasos"><span class="active" data-step="1" aria-current="step">1. Organización</span><span data-step="2">2. Aplicabilidad</span><span data-step="3">3. Assessment</span><span data-step="4">4. Resultado</span></div>
+
+  <section id="step0" class="step active home">
+    <div class="hero home-hero">
+      <span class="eyebrow">ENS READINESS · GRC</span>
+      <h2 tabindex="-1">Prepara tu organización para el Esquema Nacional de Seguridad</h2>
+      <p>Una evaluación guiada de unos 15–20 minutos que te dice si el ENS probablemente te aplica, en qué punto estás, qué evidencias puedes aportar y qué hacer primero. Es una herramienta de <strong>readiness</strong>: no sustituye una auditoría ni una certificación.</p>
+    </div>
+
+    <div class="value-grid">
+      <div class="card value"><span aria-hidden="true">🎯</span><h3>Aplicabilidad y categoría</h3><p>Orientación preliminar sobre si el ENS aplica a tu servicio y con qué categoría empezar.</p></div>
+      <div class="card value"><span aria-hidden="true">🔍</span><h3>Estado y evidencias</h3><p>Distingue lo que dices que haces de lo que puedes demostrar, y lo que aún no sabes.</p></div>
+      <div class="card value"><span aria-hidden="true">🗂️</span><h3>Plan de acción</h3><p>Gaps priorizados con responsable, fecha y estado, exportables a Excel (CSV).</p></div>
+    </div>
+
+    <h3 class="menu-title">¿Qué quieres hacer?</h3>
+    <div class="menu-grid">
+      <button class="menu-card primary-card" data-action="start"><span class="mc-icon" aria-hidden="true">▶</span><strong>Nueva evaluación</strong><small>Empieza desde cero en 4 pasos.</small></button>
+      <button class="menu-card" id="resumeCard" data-action="resume" hidden><span class="mc-icon" aria-hidden="true">↩</span><strong>Volver a la evaluación en curso</strong><small id="resumeName"></small></button>
+      <div class="menu-card static" id="draftCard" hidden><span class="mc-icon" aria-hidden="true">💾</span><strong>Borrador guardado</strong><small id="draftName"></small>
+        <span class="mc-actions"><button class="ghost-dark" data-action="recover-draft">Recuperar</button><button class="ghost-dark" data-action="discard-draft">Descartar</button></span></div>
+      <button class="menu-card" data-action="import-json"><span class="mc-icon" aria-hidden="true">📥</span><strong>Importar evaluación</strong><small>Carga un fichero <code>ens-project.json</code>.</small></button>
+      <button class="menu-card" data-action="demo"><span class="mc-icon" aria-hidden="true">👀</span><strong>Ver un ejemplo</strong><small>Carga una empresa ficticia para recorrer la herramienta.</small></button>
+      <button class="menu-card" data-action="toggle-guide" aria-expanded="false" aria-controls="guidePanel"><span class="mc-icon" aria-hidden="true">📘</span><strong>Cómo funciona</strong><small>Pasos, indicadores y límites.</small></button>
+    </div>
+
+    <div class="card guide-panel" id="guidePanel" hidden>
+      <h3>Cómo funciona</h3>
+      <ol class="how">
+        <li><strong>Organización.</strong> Nombre, tipo, sector y servicio.</li>
+        <li><strong>Aplicabilidad.</strong> Relación con el sector público e impacto en disponibilidad, confidencialidad e integridad.</li>
+        <li><strong>Assessment.</strong> Estado de cada control + evidencia disponible + responsable y fecha. «No sé» es una respuesta válida.</li>
+        <li><strong>Resultado.</strong> Readiness declarado y verificable, gaps, desglose por área y plan de acción.</li>
+      </ol>
+      <details><summary>¿Qué es el ENS?</summary><p>El Esquema Nacional de Seguridad (RD 311/2022) fija los principios y requisitos de seguridad de la información y los servicios del sector público español y de las entidades que les prestan servicios.</p></details>
+      <details><summary>¿Qué NO es esta herramienta?</summary><p>No es una auditoría, no emite certificación ni dictamen jurídico, y sus porcentajes no equivalen a un «% de cumplimiento ENS». Las referencias a medidas son orientativas y deben contrastarse con el texto vigente.</p></details>
+      <details><summary>Privacidad de los datos</summary><p>Todo se procesa en tu navegador. No hay servidor: los datos solo se guardan en este navegador (autoguardado) o en los ficheros que tú exportes.</p></details>
+    </div>
+  </section>
+
+  <section id="step1" class="step">
+    <div class="hero">
+      <span class="eyebrow">ENS READINESS</span>
+      <h2 tabindex="-1">De la primera evaluación al plan de acción.</h2>
+      <p>Una evaluación GRC sencilla para identificar aplicabilidad, situación actual, evidencias y próximos pasos. No sustituye una auditoría ni una certificación ENS.</p>
+    </div>
+    <div class="card grid2">
+      <label>Organización *<input id="orgName" placeholder="Ej. Empresa / Ayuntamiento" required aria-describedby="err-orgName"><span class="field-error" id="err-orgName" role="alert"></span></label>
+      <label>Tipo de organización *<select id="orgType" required aria-describedby="err-orgType"><option value="">Selecciona…</option><option value="aapp">Administración Pública</option><option value="universidad">Universidad pública</option><option value="proveedor">Proveedor tecnológico / contratista</option><option value="privada">Entidad privada sin prestación ENS identificada</option><option value="otro">Otro</option></select><span class="field-error" id="err-orgType" role="alert"></span></label>
+      <label>Sector<select id="sector"><option value="">Selecciona…</option><option>Administración pública</option><option>Salud</option><option>Educación</option><option>Servicios tecnológicos</option><option>Finanzas</option><option>Industria</option><option>Otros</option></select></label>
+      <label>Tamaño<select id="size"><option>Micro / pequeña</option><option>Mediana</option><option>Grande</option></select></label>
+      <label>Servicio principal<textarea id="service" placeholder="¿Qué servicio presta y qué sistemas están implicados?"></textarea></label>
+      <label>Relación con el sector público<textarea id="publicRelation" placeholder="Contrato, convenio, prestación de servicio, suministro, ninguna…"></textarea></label>
+    </div>
+    <div class="actions right"><button class="primary" data-action="go2">Continuar →</button></div>
+  </section>
+
+  <section id="step2" class="step">
+    <div class="section-title"><span class="eyebrow">2 / 4</span><h2 tabindex="-1">Aplicabilidad y contexto</h2><p>El resultado es orientativo: la aplicabilidad real debe contrastarse con el supuesto jurídico y el alcance concreto del servicio/sistema.</p></div>
+    <div class="card">
+      <fieldset class="callout"><legend>¿Existe una prestación o relación contractual con el sector público que afecte al servicio evaluado?</legend>
+        <div class="choice-row"><label><input type="radio" name="publicContract" value="si"> Sí</label><label><input type="radio" name="publicContract" value="no"> No</label><label><input type="radio" name="publicContract" value="no_sabe" checked> No sé</label></div>
+      </fieldset>
+      <h3>Impacto preliminar del sistema</h3>
+      <div class="grid3">
+        <label>Disponibilidad<select id="availability"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+        <label>Confidencialidad<select id="confidentiality"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+        <label>Integridad<select id="integrity"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+      </div>
+      <label>Tipos de información relevantes<select id="infoType" multiple size="5"><option value="publica">Pública</option><option value="personal">Datos personales</option><option value="sensible">Información sensible</option><option value="critica">Información/servicio crítico</option><option value="financiera">Información financiera</option></select></label>
+    </div>
+    <div class="actions"><button class="secondary" data-action="back1">← Atrás</button><button class="primary" data-action="go3">Continuar →</button></div>
+  </section>
+
+  <section id="step3" class="step">
+    <div class="section-title"><span class="eyebrow">3 / 4</span><h2 tabindex="-1">Assessment GRC</h2><p>Para cada área indica el estado y, sobre todo, si puedes demostrarlo con evidencia. Categoría preliminar: <strong id="currentCategory"></strong>.</p></div>
+    <div class="card filters">
+      <label>Área<select id="filterArea"></select></label>
+      <label>Prioridad<select id="filterPriority"><option value="">Todas</option><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></label>
+      <label class="check"><input type="checkbox" id="filterUnanswered"> Solo sin responder</label>
+      <label class="check"><input type="checkbox" id="excludeAbove" checked> Excluir del cálculo controles exigibles solo en categorías superiores</label>
+      <p class="answered" id="answeredCount" role="status"></p>
+    </div>
+    <div id="controls"></div>
+    <p id="noResults" class="empty" hidden>Ningún control coincide con los filtros.</p>
+    <div class="actions"><button class="secondary" data-action="back2">← Atrás</button><button class="primary" data-action="generate">Generar assessment →</button></div>
+  </section>
+
+  <section id="step4" class="step">
+    <div class="section-title"><span class="eyebrow">4 / 4</span><h2 tabindex="-1">Resultado ejecutivo</h2><p id="reportMeta"></p></div>
+    <div id="report"></div>
+    <div class="actions right"><button class="secondary" data-action="print">🖨️ Imprimir / PDF</button><button class="secondary" data-action="export-csv">Exportar plan (CSV)</button><button class="secondary" data-action="export-json">Exportar proyecto</button><button class="primary" data-action="go3">← Revisar assessment</button></div>
+  </section>
+
+  <section id="libraryView" class="step library-view" hidden>
+    <div class="section-title"><span class="eyebrow">BIBLIOTECA GRC</span><h2 tabindex="-1">Biblioteca de controles</h2><p>Catálogo de controles de evaluación disponibles, con referencias ENS orientativas, categoría y evidencias esperadas.</p></div>
+    <div class="card filters"><label>Buscar control<input id="librarySearch" type="search" placeholder="Código, medida, área o palabra clave"></label><label>Área<select id="libraryArea"><option value="">Todas las áreas</option></select></label><p id="libraryCount" class="answered"></p></div>
+    <div id="libraryControls" class="library-grid"></div>
+    <div class="card normative-note"><h3>Estado de verificación normativa</h3><p>Las referencias del catálogo original están marcadas como pendientes de contraste individual. Esta biblioteca no debe presentarse como catálogo completo ni como matriz de cumplimiento del Anexo II hasta validar cada código, submedida, dimensión y categoría contra el texto consolidado del RD 311/2022 y las guías CCN-STIC aplicables.</p><p><strong>Fuente normativa:</strong> Real Decreto 311/2022, de 3 de mayo, especialmente sus Anexos I y II. Consulta el texto oficial en el BOE.</p><a href="https://www.boe.es/eli/es/rd/2022/05/03/311/con" target="_blank" rel="noopener noreferrer">Texto consolidado del RD 311/2022</a></div>
+    <div class="actions"><button class="secondary" data-action="home">← Inicio</button><button class="primary" data-action="start">Nueva evaluación</button></div>
+  </section>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<footer>ENS Readiness Assistant v2 · Evaluación orientativa · RD 311/2022 · La herramienta no constituye certificación ni dictamen jurídico.</footer>
+<script src="data/controls.js"></script>
+<script src="data/recommendations.js"></script>
+<script src="data/schema.js"></script>
+<script src="data/example.js"></script>
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

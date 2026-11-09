@@ -1,0 +1,9 @@
+{
+  "name": "ens-readiness-assistant",
+  "version": "2.1.0",
+  "description": "Herramienta web ligera de readiness ENS con enfoque GRC",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  }
+}
